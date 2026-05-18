@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+.venv-win/
+dist/
+build/
+*.log
+tasks/.state/
+tasks/*.lock
+*.tmp
+.pytest_cache/

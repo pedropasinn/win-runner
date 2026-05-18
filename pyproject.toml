@@ -1,0 +1,27 @@
+[project]
+name = "win-runner"
+version = "0.2.0"
+description = "Task runner Windows-native: filas .md → Claude CLI, com auto-resume via Task Scheduler"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "rich>=13.7",
+    "textual>=0.55",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+win-runner = "win_runner.cli:main"
+win-runner-tui = "win_runner.tui:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["win_runner"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
