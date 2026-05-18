@@ -39,24 +39,26 @@ para um roda no outro sem ajuste.
 
 Não precisa de admin para nenhuma das instalações acima — todas suportam modo user.
 
-## Instalação (one-shot)
+## Instalação
 
-```powershell
-# em PowerShell user-mode:
-cd $env:USERPROFILE\repo\win-runner
-powershell -ExecutionPolicy Bypass -File install.ps1
-```
+EDR corporativo bloqueia scripts PowerShell longos que invocam
+`winget + setx + schtasks` em sequência (parece reconnaissance).
+Em vez de tentar contornar com assinatura, o setup é **manual** —
+~15 comandos curtos pra colar um por vez no PowerShell.
 
-O script:
+**Siga**: [`docs/windows-setup-manual.md`](docs/windows-setup-manual.md)
 
-1. Verifica Python 3.11+ e `claude` no PATH.
-2. Cria venv em `%USERPROFILE%\.local\win-runner-venv`.
-3. Instala o pacote (`pip install -e .`).
-4. Cria shim `win-runner.cmd` em `%USERPROFILE%\.local\bin`.
-5. Adiciona `%USERPROFILE%\.local\bin` ao PATH user (sem admin).
-6. Cria diretórios `%LOCALAPPDATA%\win-runner\{logs,state}`.
+Resumão (~10 min total):
 
-Após reabrir o PowerShell, `win-runner --help` funciona.
+1. Verificar Python 3.11+, claude CLI, schtasks user-level.
+2. Instalar Python via winget user-scope (ou python.org manual).
+3. Instalar `@anthropic-ai/claude-code` via npm user-scope.
+4. `git clone` deste repo em `%USERPROFILE%\repo\win-runner`.
+5. Criar venv e `pip install -e .`.
+6. Criar shim `win-runner.cmd` em `%USERPROFILE%\.local\bin`.
+7. Adicionar `%USERPROFILE%\.local\bin` ao PATH (via GUI).
+8. Configurar UTF-8 no `$PROFILE`.
+9. `win-runner run hello`.
 
 ## Uso
 
@@ -230,15 +232,9 @@ provavelmente desabilitou — não há contorno user-mode; abrir ticket.
 
 ## Daemons persistentes (opcional)
 
-Para o status server subir automaticamente no logon (sem precisar
-abrir terminal):
-
-```powershell
-.\scripts\register-daemons.ps1     # cria entry user-level no Task Scheduler
-schtasks /run /tn win-runner-status   # inicia agora sem esperar logoff
-# ...
-.\scripts\unregister-daemons.ps1   # desfaz
-```
+Pra subir o status server no logon, ver `docs/windows-setup-manual.md`
+§9 — é uma linha de `schtasks /create` que você cola direto, sem
+script.
 
 ## Estado atual
 

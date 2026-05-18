@@ -1,6 +1,6 @@
 [project]
 name = "win-runner"
-version = "0.2.0"
+version = "0.2.1"
 description = "Task runner Windows-native: filas .md → Claude CLI, com auto-resume via Task Scheduler"
 requires-python = ">=3.11"
 dependencies = [
